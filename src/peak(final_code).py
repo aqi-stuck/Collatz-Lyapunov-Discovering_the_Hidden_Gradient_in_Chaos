@@ -233,7 +233,7 @@ def run_test_runs(model, test_ranges, runs=5, samples=10000):
     aggregate = {label: [] for label, _, _ in test_ranges}
 
     for run in range(1, runs + 1):
-        print(f"\n Test run {run}/{runs}:")
+        print(f"\nTest run {run}/{runs}:")
         for label, min_n, max_n in test_ranges:
             result = test_model(model, min_n, max_n, samples=samples)
             aggregate[label].append(result)
@@ -243,7 +243,7 @@ def run_test_runs(model, test_ranges, runs=5, samples=10000):
                 f"overall_avg={result['overall_avg']:.4f}"
             )
 
-    print("\n Summary across test runs:")
+    print("\nSummary across test runs:")
     for label in aggregate:
         success_rates = [r["success_rate"] for r in aggregate[label]]
         overall_avgs = [r["overall_avg"] for r in aggregate[label]]
