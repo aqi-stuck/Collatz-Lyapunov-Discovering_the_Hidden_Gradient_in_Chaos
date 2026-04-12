@@ -238,7 +238,13 @@ def test_model(model, min_n, max_n, samples=None, rng=None):
 
 
 def run_test_runs(model, test_ranges, runs=5, samples=10000, seed=None):
-    """Run repeated randomized evaluations and print per-run plus aggregate metrics."""
+    """
+    Run repeated randomized evaluations and print per-run plus aggregate metrics.
+
+    runs controls how many repeated evaluations are executed per range (default: 5).
+    samples controls how many random integers are tested per range in each run (default: 10000).
+    seed sets RNG reproducibility; use None for non-deterministic sampling.
+    """
     aggregate = {label: [] for label, _, _ in test_ranges}
     rng = np.random.default_rng(seed)
 
