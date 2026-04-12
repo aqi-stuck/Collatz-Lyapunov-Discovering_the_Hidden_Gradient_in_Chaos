@@ -248,8 +248,8 @@ def run_test_runs(model, test_ranges, runs=5, samples=10000, seed=None):
     aggregate = {label: [] for label, _, _ in test_ranges}
     rng = np.random.default_rng(seed)
 
-    for run in range(1, runs + 1):
-        print(f"\nTest run {run}/{runs}:")
+    for run_index in range(1, runs + 1):
+        print(f"\nTest run {run_index}/{runs}:")
         for label, min_n, max_n in test_ranges:
             result = test_model(model, min_n, max_n, samples=samples, rng=rng)
             aggregate[label].append(result)
