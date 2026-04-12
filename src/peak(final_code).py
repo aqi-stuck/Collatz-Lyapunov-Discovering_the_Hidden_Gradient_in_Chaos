@@ -198,11 +198,19 @@ def train(min_n=2, max_n=20000, epochs=40, batch_size=512, k_steps=3, samples=20
 
 
 # Test how well the model works
-def test_model(model, min_n, max_n, samples=None):
+def test_model(model, min_n, max_n, samples=None, rng=None):
+    """
+    Evaluate V(C(n)) < V(n) on a numeric interval.
+
+    If samples is None, evaluates every number in [min_n, max_n].
+    If samples is set, evaluates a random subset of that size.
+    """
     if samples is None:
         nums = np.arange(min_n, max_n + 1, dtype=np.int64)
     else:
-        nums = np.random.randint(min_n, max_n + 1, size=samples, dtype=np.int64)
+        if rng is None:
+            rng = np.random.default_rng()
+        nums = rng.integers(min_n, max_n + 1, size=samples, dtype=np.int64)
     next_nums = collatz_steps(nums, k=1)
 
     Xn = make_features(nums, max_n=max_n)
@@ -229,13 +237,15 @@ def test_model(model, min_n, max_n, samples=None):
     }
 
 
-def run_test_runs(model, test_ranges, runs=5, samples=10000):
+def run_test_runs(model, test_ranges, runs=5, samples=10000, seed=None):
+    """Run repeated randomized evaluations and print per-run plus aggregate metrics."""
     aggregate = {label: [] for label, _, _ in test_ranges}
+    rng = np.random.default_rng(seed)
 
     for run in range(1, runs + 1):
         print(f"\nTest run {run}/{runs}:")
         for label, min_n, max_n in test_ranges:
-            result = test_model(model, min_n, max_n, samples=samples)
+            result = test_model(model, min_n, max_n, samples=samples, rng=rng)
             aggregate[label].append(result)
             print(
                 f"{label}: success={result['success_rate']:.1%} | "
@@ -283,6 +293,7 @@ if __name__ == "__main__":
         ],
         runs=5,
         samples=10000,
+        seed=42,
     )
 
     print("\n Gradient descent vs Collatz comparison:")
