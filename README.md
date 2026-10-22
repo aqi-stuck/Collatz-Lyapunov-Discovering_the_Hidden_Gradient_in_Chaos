@@ -236,6 +236,7 @@ python collatz_lyapunov.py
 ```
 
 This will execute the full training pipeline with default parameters.
+After training, it now performs 5 randomized test runs on both small (2–2000) and large (10k–50k) ranges and prints aggregate statistics.
 
 ---
 
